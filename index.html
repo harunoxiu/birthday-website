@@ -4,13 +4,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Birthday Surprise ❤️</title>
+  <title>A Surprise for You ❤️</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
-  <h1>Something special is coming... ❤️</h1>
-  <p>A little surprise, made just for you.</p>
-  <h2 id="countdown">Loading countdown...</h2>
+
+  <!-- Falling hearts -->
+  <div id="hearts-background" aria-hidden="true"></div>
+
+  <!-- Centered countdown and button -->
+  <main class="countdown-container">
+
+    <div class="countdown-boxes">
+      <div class="time-box">
+        <span class="time-value" id="hours">00</span>
+        <span class="time-label">HOURS</span>
+      </div>
+
+      <div class="time-box">
+        <span class="time-value" id="minutes">00</span>
+        <span class="time-label">MINUTES</span>
+      </div>
+
+      <div class="time-box">
+        <span class="time-value" id="seconds">00</span>
+        <span class="time-label">SECONDS</span>
+      </div>
+    </div>
+
+    <button id="surprise-button" type="button" disabled>
+      🔒 &nbsp; WAIT FOR YOUR SURPRISE
+    </button>
+
+  </main>
+
+  <!-- Custom cursor -->
+  <div id="heart-cursor" aria-hidden="true">♥</div>
+
 </body>
 </html>
