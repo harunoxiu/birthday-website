@@ -1,0 +1,17 @@
+body {
+  background: linear-gradient(
+    135deg,
+    #fff0f5,
+    #ffe0eb,
+    #fff7f0,
+    #fce4ec
+  );
+  background-size: 400% 400%;
+  animation: dreamyBackground 15s ease infinite;
+}
+
+@keyframes dreamyBackground {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
