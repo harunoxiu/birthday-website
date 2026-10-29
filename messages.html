@@ -1,0 +1,475 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#d7a0ff">
+  <title>Our Little World</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 35px 18px 60px;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      color: #704477;
+      background: linear-gradient(
+        125deg,
+        #ff91ca,
+        #d7a0ff,
+        #a77bff,
+        #ff75bb,
+        #e5a7ff,
+        #ffb4df
+      );
+      background-size: 350% 350%;
+      animation: gradientMove 12s ease infinite;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* FALLING POMPOMPURIN AND HEARTS */
+
+    #falling-layer {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .falling-item {
+      position: absolute;
+      top: -120px;
+      animation: fallDown var(--duration, 10s) linear forwards;
+      will-change: transform, opacity;
+    }
+
+    .falling-pompom {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 4px 8px rgba(80, 40, 100, .16));
+    }
+
+    .falling-heart {
+      color: var(--heart-color);
+      font-size: var(--heart-size);
+      line-height: 1;
+    }
+
+    @keyframes fallDown {
+      0% {
+        transform: translate3d(0, -30px, 0) rotate(-15deg);
+        opacity: 0;
+      }
+
+      10% { opacity: .9; }
+
+      30% {
+        transform: translate3d(var(--sway), 30vh, 0) rotate(12deg);
+      }
+
+      60% {
+        transform: translate3d(calc(var(--sway) * -.6), 65vh, 0)
+          rotate(-12deg);
+      }
+
+      100% {
+        transform: translate3d(0, 115vh, 0) rotate(18deg);
+        opacity: 0;
+      }
+    }
+
+    /* HEADER */
+
+    .page-header {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      margin: 0 auto 25px;
+      text-align: center;
+      color: white;
+      text-shadow: 0 2px 15px rgba(105, 48, 130, .22);
+    }
+
+    .page-header .eyebrow {
+      font-size: 12px;
+      letter-spacing: 4px;
+      font-weight: bold;
+    }
+
+    .page-header h1 {
+      margin: 12px 0;
+      font-size: clamp(36px, 7vw, 62px);
+    }
+
+    .page-header p {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    /* LARGE FROSTED GLASS WINDOW */
+
+    .memory-window {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 1000px);
+      margin: 0 auto;
+      padding: clamp(20px, 5vw, 48px);
+
+      background: rgba(255, 255, 255, .23);
+      border: 1px solid rgba(255, 255, 255, .65);
+      border-radius: 32px;
+
+      box-shadow:
+        0 25px 80px rgba(81, 40, 115, .2),
+        inset 0 1px 1px rgba(255, 255, 255, .5);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .section-heading {
+      text-align: center;
+      margin: 0 0 10px;
+      color: #713d83;
+      font-size: clamp(24px, 4vw, 34px);
+    }
+
+    .section-subtitle {
+      text-align: center;
+      margin: 0 0 30px;
+      color: #81528c;
+      line-height: 1.7;
+    }
+
+    /* PHOTO GALLERY */
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .photo-card {
+      min-width: 0;
+      padding: 12px;
+      background: rgba(255, 255, 255, .67);
+      border: 1px solid rgba(255, 255, 255, .8);
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(103, 53, 130, .09);
+      transition: transform .25s ease;
+    }
+
+    .photo-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .photo-frame {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #ffd5eb, #e7d3ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .photo-frame img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-placeholder {
+      padding: 18px;
+      text-align: center;
+      color: #a66ba9;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .photo-caption {
+      margin: 13px 3px 4px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: bold;
+      color: #8c4b8e;
+    }
+
+    /* EMPTY NOTES — WRITE YOUR OWN */
+
+    .notes-section {
+      margin-top: 46px;
+    }
+
+    .note-card {
+      min-height: 150px;
+      margin-top: 18px;
+      padding: 24px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .53);
+      border: 1px solid rgba(255, 255, 255, .65);
+      box-shadow: 0 6px 18px rgba(103, 53, 130, .06);
+    }
+
+    .note-card h3 {
+      margin: 0 0 12px;
+      color: #b34d94;
+      font-size: 19px;
+    }
+
+    .note-card p {
+      min-height: 70px;
+      margin: 0;
+      line-height: 1.9;
+      white-space: pre-line;
+      overflow-wrap: anywhere;
+    }
+
+    /* CLOSING SECTION */
+
+    .closing-message {
+      margin-top: 45px;
+      text-align: center;
+      color: #78467e;
+      line-height: 1.9;
+    }
+
+    .closing-heart {
+      display: block;
+      margin: 15px 0;
+      font-size: 42px;
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.14); }
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 14px 24px;
+      border-radius: 30px;
+      color: white;
+      background: linear-gradient(110deg, #ff4e9b, #a64dff);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: bold;
+      box-shadow: 0 8px 22px rgba(190, 65, 170, .22);
+      transition: transform .2s ease;
+    }
+
+    .back-button:hover {
+      transform: translateY(-3px);
+    }
+
+    @media (max-width: 580px) {
+      body {
+        padding: 25px 12px 45px;
+      }
+
+      .memory-window {
+        padding: 21px 15px;
+        border-radius: 24px;
+      }
+
+      .photo-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .note-card {
+        padding: 18px;
+      }
+
+      .page-header .eyebrow {
+        letter-spacing: 2px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body {
+        animation: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+
+      .closing-heart {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="falling-layer" aria-hidden="true"></div>
+
+  <header class="page-header">
+    <p class="eyebrow">♡Maligayang Bati sa Iyung Kaarawan♡</p>
+    <h1>Our Little World</h1>
+    <p>for my favorite person.</p>
+  </header>
+
+  <main class="memory-window">
+    <h2 class="section-heading">Our Memories ♡</h2>
+    <p class="section-subtitle">" "</p>
+
+    <!-- PHOTO GALLERY -->
+    <section class="photo-grid">
+
+      <article class="photo-card">
+        <div class="photo-frame">
+          <img src="./photo1.jpeg" alt="Memory 1"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+          <div class="photo-placeholder" style="display:none;">
+            📷 Add photo 1<br>photos/photo1.jpg
+          </div>
+        </div>
+        <p class="photo-caption">Eto yung nag ayala tayo ket broke tayo HASDHASHD</p>
+      </article>
+
+      <article class="photo-card">
+        <div class="photo-frame">
+          <img src="./photo2.jpeg" alt="Memory 2"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+          <div class="photo-placeholder" style="display:none;">
+          </div>
+        </div>
+        <p class="photo-caption">Elibs ka saken neto kasi andami kong nakuha sa claw</p>
+      </article>
+
+      <article class="photo-card">
+        <div class="photo-frame">
+          <img src="./photo3.jpeg" alt="Memory 3"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+          <div class="photo-placeholder" style="display:none;">
+    
+          </div>
+        </div>
+        <p class="photo-caption">pinaka cute nating photobooth</p>
+      </article>
+
+      <article class="photo-card">
+        <div class="photo-frame">
+          <img src="./photo4.jpeg" alt="Memory 4"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+          <div class="photo-placeholder" style="display:none;">
+    
+          </div>
+        </div>
+        <p class="photo-caption">pinaka maangas nating photobooth</p>
+      </article>
+
+    </section>
+
+    <!-- EMPTY NOTES -->
+    <section class="notes-section">
+      <h2 class="section-heading">💌</h2>
+      <p class="section-subtitle"></p>
+
+      <article class="note-card">
+        <p>happy birthday, madam boss baby!! 💗😭
+
+malapit na tayo mag-two years HASHDAH 😭 wala, nakakagulat lang na ang tagal na pala natin magkasama. like, hindi ko rin namamalayan na almost 2 years na pala tayo, parang kailan lang HAHAHAHA.
+
+anyway, i want you to know how proud i am of you and how hard you've been working sa acads mo. i see how much effort you put into everything, and how you keep trying to do your best these past few months kahit pagod na pagod ka na. i know hindi laging madali, and there are probably times na nakaka-overwhelm na lahat, pero i'm really proud of you for still trying. just don't forget na you don't always have to push yourself so hard, okay? you deserve to rest, too, and you don't have to be productive all the time. i'm proud of you kahit sa mga araw na feeling mo wala kang nagawang enough.
+
+namimiss ko na mag-roblox tayo kaso lagi ka nang busy sad HAHAHAHA. pero okay lang yan, sa christmas break na lang tayo maglaro. babawi tayo sa lahat ng games na hindi natin nalalaro 😭🙏🏻 i better see you online by then, madam boss baby.
+
+also, thank you for being part of my life. ang dami na rin nating napagdaanan and memories na nabuo together, and i'm really happy na ikaw yung kasama ko sa almost two years na 'to. i hope you know na you can always talk to me kapag pagod ka na, kapag may problema ka, or kahit wala ka lang sa mood. you don't always have to explain yourself or pretend na okay ka. i'll be here for you, whether you need someone to listen, someone to comfort you, or someone na mang-aasar lang sa'yo para matawa ka HAHAHAHA.
+
+i hope this new chapter of your life brings you more happiness, peace, and reasons to be proud of yourself. i hope you get to experience more things that make you happy, achieve the things you've been working hard for, and have more time for yourself and the things you love. and if things get difficult, i hope you remember na you don't have to figure everything out all at once. take your time, rest when you need to, and give yourself the same patience you give to other people.
+
+and of course, i hope we get to make more memories together, more random kwentos, more kulit moments, more games, and more birthdays na magkasama tayo. hopefully, by the time we celebrate our next birthday together, mas marami na naman tayong stories na pagtatawanan 😭💗
+
+happy birthday ulit, madam boss baby!! i love youuu, and i'm really grateful na i get to be part of your life. thank you for being you, and please remember na i'm always cheering for you, even when you don't notice it. i'm rooting for you in everything you do, and i'll always be proud of you.
+
+enjoy your day, birthday girl!! you deserve all the love and happiness in the world. MWA MWA MWA 💋💗🎂</p>
+      </article>
+    </section>
+
+    <footer class="closing-message">
+        <span class="closing-heart">♡</span>
+      <a class="back-button" href="index.html">Back to the countdown</a>
+    </footer>
+  </main>
+
+  <script>
+    /* FALLING POMPOMPURIN + HEARTS */
+
+    const layer = document.getElementById("falling-layer");
+    const pompomPath = "./pompompurin_transparent.png";
+
+    function randomBetween(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function createFallingItem() {
+      const isPompom = Math.random() < 0.4;
+      const item = document.createElement("div");
+
+      item.className = "falling-item";
+      item.style.left = randomBetween(0, 96) + "vw";
+      item.style.setProperty("--duration", randomBetween(8, 15) + "s");
+      item.style.setProperty("--sway", randomBetween(-70, 70) + "px");
+
+      if (isPompom) {
+        const img = document.createElement("img");
+        img.className = "falling-pompom";
+        img.src = pompomPath;
+        img.alt = "";
+        img.draggable = false;
+        item.style.width = randomBetween(38, 82) + "px";
+
+        img.onerror = () => {
+          console.error("Pompompurin image not found:", pompomPath);
+          item.remove();
+        };
+
+        item.appendChild(img);
+      } else {
+        item.classList.add("falling-heart");
+        item.textContent = Math.random() > 0.5 ? "♥" : "♡";
+        item.style.setProperty("--heart-size", randomBetween(15, 36) + "px");
+        item.style.setProperty(
+          "--heart-color",
+          ["#ff4fa0", "#ff80c0", "#b65cff", "#ffffff"][
+            Math.floor(Math.random() * 4)
+          ]
+        );
+      }
+
+      layer.appendChild(item);
+      item.addEventListener("animationend", () => item.remove());
+    }
+
+    for (let i = 0; i < 16; i++) {
+      setTimeout(createFallingItem, i * 250);
+    }
+
+    setInterval(createFallingItem, 500);
+  </script>
+</body>
+</html>
